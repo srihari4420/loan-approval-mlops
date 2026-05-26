@@ -7,7 +7,19 @@ authors = [
     { name = "srihari4420", email = "sriharichowdary4420.com" }
 ]
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "category-encoders>=2.9.0",
+    "ipykernel>=7.2.0",
+    "jupyter>=1.1.1",
+    "lightgbm>=4.6.0",
+    "matplotlib>=3.10.9",
+    "numpy>=2.4.6",
+    "pandas>=3.0.3",
+    "scikit-learn>=1.8.0",
+    "seaborn>=0.13.2",
+    "shap>=0.51.0",
+    "xgboost>=3.2.0",
+]
 
 [project.scripts]
 loan-mlops = "loan_mlops:main"
@@ -15,3 +27,10 @@ loan-mlops = "loan_mlops:main"
 [build-system]
 requires = ["uv_build>=0.11.16,<0.12.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.14",
+]
