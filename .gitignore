@@ -252,3 +252,6 @@ outputs/
 # DVC cache
 .dvc/cache/
 .dvc/tmp/
+predictions.db
+smoke-stdout.log
+smoke-stderr.log
