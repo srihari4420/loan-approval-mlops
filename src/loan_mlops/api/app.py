@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import logging
 import time
+import traceback
 from typing import Annotated
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException, Request
 from sklearn.pipeline import Pipeline
 
-from loan_mlops.api import settings
-from loan_mlops.api.dependencies import get_model
+from loan_mlops.api.dependencies import get_expected_columns, get_model
 from loan_mlops.api.schemas import (
     Factor,
     HealthResponse,
@@ -53,17 +54,16 @@ def create_app() -> FastAPI:
         return response
 
     @app.get("/health", response_model=HealthResponse)
-    def health() -> HealthResponse:
+    def health(s: Annotated[Settings, Depends(get_settings)]) -> HealthResponse:
         try:
             model = get_model()
             return HealthResponse(
                 status="ok",
                 model_loaded=model is not None,
-                model_version=settings.model_name,
+                model_version=s.model_name,
             )
         except Exception as e:
-            import traceback
-            traceback.print_exc()  # prints to stderr, uvicorn shows it
+            traceback.print_exc()
             logger.error("health check failed", extra={"error": repr(e), "type": type(e).__name__})
             return HealthResponse(status="degraded", model_loaded=False, model_version=None)
 
@@ -71,10 +71,15 @@ def create_app() -> FastAPI:
     def predict(
         application: LoanApplication,
         model: Annotated[Pipeline, Depends(get_model)],
-        settings: Annotated[Settings, Depends(get_settings)],
+        s: Annotated[Settings, Depends(get_settings)],
+        expected_cols: Annotated[tuple[str, ...], Depends(get_expected_columns)],
     ) -> PredictionResponse:
-        # Convert the request to the DataFrame shape the model expects
-        row = pd.DataFrame([application.model_dump(by_alias=True, exclude={"application_id"})])
+        submitted = application.model_dump(by_alias=True, exclude={"application_id"})
+
+        # Pad any columns the model was trained on but the caller didn't provide.
+        # NaN flows through the pipeline's imputer the same way as during training.
+        row_dict = {col: submitted.get(col, np.nan) for col in expected_cols}
+        row = pd.DataFrame([row_dict], columns=list(expected_cols))
 
         try:
             proba = float(model.predict_proba(row)[0, 1])
@@ -82,25 +87,24 @@ def create_app() -> FastAPI:
             logger.exception("scoring failed", extra={"error": str(e)})
             raise HTTPException(status_code=500, detail="scoring failed") from e
 
-        decision = "decline" if proba >= settings.decision_threshold else "approve"
+        decision = "decline" if proba >= s.decision_threshold else "approve"
 
         risk_factors: list[Factor] = []
         protective_factors: list[Factor] = []
-        if settings.enable_explanations:
+        if s.enable_explanations:
             try:
                 explanation = explain_single(model, row, top_k=5)
                 risk_factors = [Factor(**f) for f in explanation["risk_factors"]]
                 protective_factors = [Factor(**f) for f in explanation["protective_factors"]]
             except Exception as e:
-                # Explanation failures shouldn't break the prediction — log and move on
                 logger.warning("explanation failed", extra={"error": str(e)})
 
         return PredictionResponse(
             application_id=application.application_id,
             decision=decision,
             default_probability=proba,
-            threshold=settings.decision_threshold,
-            model_version=settings.model_name,
+            threshold=s.decision_threshold,
+            model_version=s.model_name,
             risk_factors=risk_factors,
             protective_factors=protective_factors,
             correlation_id=set_correlation_id(),
