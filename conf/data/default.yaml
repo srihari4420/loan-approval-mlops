@@ -1,0 +1,13 @@
+# Data paths and cleaning thresholds
+raw_dir: data/raw
+processed_dir: data/processed
+train_file: application_train.csv
+target_col: TARGET
+id_col: SK_ID_CURR
+
+# Cleaning
+missing_threshold: 0.6
+sentinel_days_employed: 365243
+
+# Splitting
+test_size: 0.2

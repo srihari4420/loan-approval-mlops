@@ -244,3 +244,11 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Hydra run outputs
+outputs/
+.hydra/
+
+# DVC cache
+.dvc/cache/
+.dvc/tmp/

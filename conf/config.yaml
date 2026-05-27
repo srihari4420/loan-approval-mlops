@@ -1,0 +1,16 @@
+defaults:
+  - data: default
+  - model: baseline
+  - training: default
+  - _self_
+
+# Global settings
+random_state: 42
+project_name: loan-mlops
+
+# Hydra-specific
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: false
