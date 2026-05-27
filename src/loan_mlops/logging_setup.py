@@ -16,13 +16,34 @@ from typing import Any
 correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="")
 
 # Standard LogRecord attributes — anything else in record.__dict__ is user-supplied extras
-_STANDARD_FIELDS = frozenset({
-    "name", "msg", "args", "levelname", "levelno", "pathname", "filename",
-    "module", "exc_info", "exc_text", "stack_info", "lineno", "funcName",
-    "created", "msecs", "relativeCreated", "thread", "threadName",
-    "processName", "process", "message", "asctime", "taskName",
-    "getMessage",
-})
+_STANDARD_FIELDS = frozenset(
+    {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "created",
+        "msecs",
+        "relativeCreated",
+        "thread",
+        "threadName",
+        "processName",
+        "process",
+        "message",
+        "asctime",
+        "taskName",
+        "getMessage",
+    }
+)
 
 
 def set_correlation_id(cid: str | None = None) -> str:
@@ -67,10 +88,12 @@ def setup_logging(level: str = "INFO", json_format: bool = False) -> None:
     if json_format:
         handler.setFormatter(JsonFormatter())
     else:
-        handler.setFormatter(HumanFormatter(
-            fmt="%(asctime)s | %(levelname)-7s | %(name)s | %(message)s",
-            datefmt="%H:%M:%S",
-        ))
+        handler.setFormatter(
+            HumanFormatter(
+                fmt="%(asctime)s | %(levelname)-7s | %(name)s | %(message)s",
+                datefmt="%H:%M:%S",
+            )
+        )
 
     root = logging.getLogger()
     root.handlers.clear()

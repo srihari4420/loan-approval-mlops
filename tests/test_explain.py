@@ -22,7 +22,8 @@ def trained_xgb() -> tuple:
     y = pd.Series((1.5 * X["num_1"] + 0.5 * rng.randn(n) > 0).astype(int))
 
     pipeline = build_pipeline(
-        X, y,
+        X,
+        y,
         model_type="xgboost",
         model_params={"n_estimators": 50, "max_depth": 3, "tree_method": "hist"},
     )
