@@ -78,6 +78,7 @@ warn_unused_ignores = true
 module = [
     "sklearn.*",
     "joblib.*",
+    "shap.*",
     "category_encoders.*",
     "hydra.*",
     "omegaconf.*",

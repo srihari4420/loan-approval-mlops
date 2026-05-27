@@ -18,21 +18,56 @@ from typing import Any
 correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="")
 
 
-_STANDARD_FIELDS = frozenset({
-    "name", "msg", "args", "levelname", "levelno", "pathname", "filename",
-    "module", "exc_info", "exc_text", "stack_info", "lineno", "funcName",
-    "created", "msecs", "relativeCreated", "thread", "threadName",
-    "processName", "process", "message", "asctime", "taskName",
-    "getMessage",
-})
+_STANDARD_FIELDS = frozenset(
+    {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "created",
+        "msecs",
+        "relativeCreated",
+        "thread",
+        "threadName",
+        "processName",
+        "process",
+        "message",
+        "asctime",
+        "taskName",
+        "getMessage",
+    }
+)
 
 # These cannot be passed via extra={} — Python's logging module reserves them.
 # We intercept and rename them to avoid the KeyError that would otherwise crash logging.
-_RESERVED_EXTRA_KEYS = frozenset({
-    "name", "msg", "args", "levelname", "levelno", "pathname", "filename",
-    "module", "exc_info", "exc_text", "stack_info", "lineno", "funcName",
-    "message", "asctime",
-})
+_RESERVED_EXTRA_KEYS = frozenset(
+    {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "message",
+        "asctime",
+    }
+)
 
 
 def _safe_extras(record: logging.LogRecord) -> dict[str, Any]:

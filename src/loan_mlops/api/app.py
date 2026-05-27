@@ -3,11 +3,12 @@ from __future__ import annotations
 import logging
 import time
 import traceback
-from typing import Annotated
+from collections.abc import Awaitable, Callable
+from typing import Annotated, Literal
 
 import numpy as np
 import pandas as pd
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from sklearn.pipeline import Pipeline
 
 from loan_mlops.api.dependencies import get_expected_columns, get_model
@@ -35,7 +36,10 @@ def create_app() -> FastAPI:
     )
 
     @app.middleware("http")
-    async def correlation_and_timing(request: Request, call_next):  # noqa: ANN001, ANN202
+    async def correlation_and_timing(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
         cid = request.headers.get("x-correlation-id") or set_correlation_id()
         set_correlation_id(cid)
         start = time.perf_counter()
@@ -87,7 +91,9 @@ def create_app() -> FastAPI:
             logger.exception("scoring failed", extra={"error": str(e)})
             raise HTTPException(status_code=500, detail="scoring failed") from e
 
-        decision = "decline" if proba >= s.decision_threshold else "approve"
+        decision: Literal["approve", "decline"] = (
+    "decline" if proba >= s.decision_threshold else "approve"
+)
 
         risk_factors: list[Factor] = []
         protective_factors: list[Factor] = []

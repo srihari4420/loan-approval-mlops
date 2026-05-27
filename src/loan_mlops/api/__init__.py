@@ -1,1 +1,1 @@
-"""HTTP API for loan default scoring."""    
+"""HTTP API for loan default scoring."""
