@@ -27,7 +27,7 @@ from loan_mlops.api.schemas import (
 )
 from loan_mlops.api.settings import Settings, get_settings
 from loan_mlops.explain import explain_single
-from loan_mlops.logging_setup import set_correlation_id, setup_logging
+from loan_mlops.logging_setup import correlation_id_var, set_correlation_id, setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -130,7 +130,7 @@ def create_app() -> FastAPI:
                 logger.warning("explanation failed", extra={"error": str(e)})
 
         latency_ms = round((time.perf_counter() - started) * 1000, 2)
-        cid = set_correlation_id()
+        cid = correlation_id_var.get() or set_correlation_id()
 
         # Audit log — fire-and-forget. If the DB is unavailable we still return
         # a prediction (the model worked); we log the persistence failure for ops.
