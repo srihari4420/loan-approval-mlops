@@ -54,7 +54,7 @@ jobs:
       - run: uv sync --dev
       - run: uv run pytest
       - if: matrix.python-version == '3.11'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-report
           path: coverage.xml
@@ -83,7 +83,7 @@ jobs:
       - run: uv sync
       - run: uv tool install pip-licenses
       - run: uv tool run pip-licenses --from=mixed --format=markdown --output-file=licenses.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: licenses-report
           path: licenses.md
