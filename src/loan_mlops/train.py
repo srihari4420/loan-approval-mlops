@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from loan_mlops.model import build_pipeline, cross_validate, evaluate, save_model
+
 import hydra
 from omegaconf import DictConfig, OmegaConf
 from sklearn.model_selection import train_test_split
@@ -18,8 +18,7 @@ from sklearn.model_selection import train_test_split
 from loan_mlops.data import load_clean
 from loan_mlops.features import split_xy
 from loan_mlops.logging_setup import set_correlation_id, setup_logging
-from loan_mlops.model import build_baseline_pipeline, build_pipeline, cross_validate, evaluate, save_model
-
+from loan_mlops.model import build_pipeline, cross_validate, evaluate, save_model
 
 @hydra.main(version_base="1.3", config_path="../../conf", config_name="config")
 def main(cfg: DictConfig) -> None:
