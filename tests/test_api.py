@@ -7,7 +7,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from loan_mlops.api.app import create_app
-from loan_mlops.api.dependencies import get_expected_columns, get_model
+from loan_mlops.api.dependencies import (
+    get_challenger,
+    get_champion,
+    get_expected_columns,
+    get_model,
+)
 
 
 @pytest.fixture
@@ -26,6 +31,8 @@ def fake_columns() -> tuple[str, ...]:
 def client(fake_model: MagicMock, fake_columns: tuple[str, ...]) -> TestClient:
     app = create_app()
     app.dependency_overrides[get_model] = lambda: fake_model
+    app.dependency_overrides[get_champion] = lambda: fake_model
+    app.dependency_overrides[get_challenger] = lambda: None
     app.dependency_overrides[get_expected_columns] = lambda: fake_columns
     return TestClient(app)
 
