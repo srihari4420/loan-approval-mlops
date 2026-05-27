@@ -17,7 +17,6 @@ from loan_mlops.api.dependencies import (
     get_challenger,
     get_champion,
     get_expected_columns,
-    get_model,
 )
 from loan_mlops.api.routing import assign_cohort
 from loan_mlops.api.schemas import (
@@ -66,12 +65,14 @@ def create_app() -> FastAPI:
         return response
 
     @app.get("/health", response_model=HealthResponse)
-    def health(s: Annotated[Settings, Depends(get_settings)]) -> HealthResponse:
+    def health(
+        s: Annotated[Settings, Depends(get_settings)],
+        champion: Annotated[Pipeline, Depends(get_champion)],
+    ) -> HealthResponse:
         try:
-            model = get_model()
             return HealthResponse(
                 status="ok",
-                model_loaded=model is not None,
+                model_loaded=champion is not None,
                 model_version=s.model_name,
             )
         except Exception as e:
