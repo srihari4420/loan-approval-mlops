@@ -18,6 +18,62 @@ from typing import Any
 correlation_id_var: ContextVar[str] = ContextVar("correlation_id", default="")
 
 
+_STANDARD_FIELDS = frozenset(
+    {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "created",
+        "msecs",
+        "relativeCreated",
+        "thread",
+        "threadName",
+        "processName",
+        "process",
+        "message",
+        "asctime",
+        "taskName",
+        "getMessage",
+    }
+)
+
+# These cannot be passed via extra={} — Python's logging module reserves them.
+# We intercept and rename them to avoid the KeyError that would otherwise crash logging.
+_RESERVED_EXTRA_KEYS = frozenset(
+    {
+        "name",
+        "msg",
+        "args",
+        "levelname",
+        "levelno",
+        "pathname",
+        "filename",
+        "module",
+        "exc_info",
+        "exc_text",
+        "stack_info",
+        "lineno",
+        "funcName",
+        "message",
+        "asctime",
+    }
+)
+
+
+def _safe_extras(record: logging.LogRecord) -> dict[str, Any]:
+    return {k: v for k, v in record.__dict__.items() if k not in _STANDARD_FIELDS}
+
+
 def set_correlation_id(cid: str | None = None) -> str:
     """Set a correlation ID for the current context. Generates one if not provided."""
     cid = cid or str(uuid.uuid4())
@@ -40,32 +96,7 @@ class JsonFormatter(logging.Formatter):
         if record.exc_info:
             log_obj["exception"] = self.formatException(record.exc_info)
         # Include any extra fields passed via logger.info(..., extra={...})
-        for key, value in record.__dict__.items():
-            if key not in {
-                "name",
-                "msg",
-                "args",
-                "created",
-                "filename",
-                "funcName",
-                "levelname",
-                "levelno",
-                "lineno",
-                "module",
-                "msecs",
-                "pathname",
-                "process",
-                "processName",
-                "relativeCreated",
-                "thread",
-                "threadName",
-                "exc_info",
-                "exc_text",
-                "stack_info",
-                "getMessage",
-                "taskName",
-            }:
-                log_obj[key] = value
+        log_obj.update(_safe_extras(record))
         return json.dumps(log_obj)
 
 
