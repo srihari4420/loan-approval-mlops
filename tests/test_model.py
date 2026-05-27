@@ -72,9 +72,7 @@ def test_pipeline_predicts_probabilities_in_valid_range(
     assert np.allclose(probas.sum(axis=1), 1.0)
 
 
-def test_pipeline_learns_signal(
-    synthetic_data: tuple, default_model_params: dict
-) -> None:
+def test_pipeline_learns_signal(synthetic_data: tuple, default_model_params: dict) -> None:
     """On data with real signal, the model must outperform random guessing."""
     from sklearn.metrics import roc_auc_score
 
@@ -102,9 +100,7 @@ def test_cross_validate_returns_expected_keys(
     assert 0.0 <= result["cv_score_mean"] <= 1.0
 
 
-def test_evaluate_returns_test_metrics(
-    synthetic_data: tuple, default_model_params: dict
-) -> None:
+def test_evaluate_returns_test_metrics(synthetic_data: tuple, default_model_params: dict) -> None:
     """evaluate must return both AUC and average precision."""
     X, y = synthetic_data
     pipeline = build_baseline_pipeline(X, default_model_params)

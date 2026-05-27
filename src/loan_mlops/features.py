@@ -20,9 +20,7 @@ logger = logging.getLogger(__name__)
 HIGH_CARDINALITY_THRESHOLD = 10
 
 
-def split_xy(
-    df: pd.DataFrame, target_col: str, id_col: str
-) -> tuple[pd.DataFrame, pd.Series]:
+def split_xy(df: pd.DataFrame, target_col: str, id_col: str) -> tuple[pd.DataFrame, pd.Series]:
     """Split into features and target, dropping the ID column."""
     y = df[target_col]
     X = df.drop(columns=[target_col, id_col])

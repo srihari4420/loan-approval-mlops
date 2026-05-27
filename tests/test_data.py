@@ -15,7 +15,6 @@ from loan_mlops.data import (
     load_raw,
 )
 
-
 # ---------- Fixtures ----------
 
 
@@ -147,9 +146,7 @@ def test_drop_high_missing_zero_threshold_drops_everything_with_any_missing() ->
 # ---------- Integration tests (filesystem) ----------
 
 
-def test_load_raw_reads_csv_and_validates(
-    tmp_path, valid_raw_df: pd.DataFrame
-) -> None:
+def test_load_raw_reads_csv_and_validates(tmp_path, valid_raw_df: pd.DataFrame) -> None:
     """load_raw should read a CSV from disk and pass schema validation."""
     csv_path = tmp_path / "test.csv"
     valid_raw_df.to_csv(csv_path, index=False)
@@ -171,9 +168,7 @@ def test_load_raw_skip_validation(tmp_path, valid_raw_df: pd.DataFrame) -> None:
     assert len(result) == len(bad_df)
 
 
-def test_load_raw_raises_on_invalid_data(
-    tmp_path, valid_raw_df: pd.DataFrame
-) -> None:
+def test_load_raw_raises_on_invalid_data(tmp_path, valid_raw_df: pd.DataFrame) -> None:
     """load_raw with validate=True should raise on invalid data."""
     csv_path = tmp_path / "test.csv"
     bad_df = valid_raw_df.copy()
@@ -184,9 +179,7 @@ def test_load_raw_raises_on_invalid_data(
         load_raw(csv_path, validate=True)
 
 
-def test_load_clean_full_pipeline(
-    tmp_path, valid_raw_df: pd.DataFrame
-) -> None:
+def test_load_clean_full_pipeline(tmp_path, valid_raw_df: pd.DataFrame) -> None:
     """load_clean integration: load + clean sentinels + drop high-missing."""
     # Add a high-missing column to test the drop step
     df = valid_raw_df.copy()

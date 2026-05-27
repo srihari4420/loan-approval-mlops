@@ -33,9 +33,7 @@ def sample_df() -> pd.DataFrame:
 
 def test_split_xy_separates_target() -> None:
     """split_xy returns target as Series and features as DataFrame."""
-    df = pd.DataFrame(
-        {"SK_ID_CURR": [1, 2, 3], "TARGET": [0, 1, 0], "f1": [10, 20, 30]}
-    )
+    df = pd.DataFrame({"SK_ID_CURR": [1, 2, 3], "TARGET": [0, 1, 0], "f1": [10, 20, 30]})
     X, y = split_xy(df, target_col="TARGET", id_col="SK_ID_CURR")
     assert list(y) == [0, 1, 0]
     assert "TARGET" not in X.columns

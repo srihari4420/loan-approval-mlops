@@ -60,9 +60,7 @@ def cross_validate(
     return result
 
 
-def evaluate(
-    pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series
-) -> dict[str, float]:
+def evaluate(pipeline: Pipeline, X_test: pd.DataFrame, y_test: pd.Series) -> dict[str, float]:
     """Evaluate a fitted pipeline on held-out test data."""
     y_pred_proba = pipeline.predict_proba(X_test)[:, 1]
     y_pred = pipeline.predict(X_test)
@@ -72,9 +70,7 @@ def evaluate(
         "test_avg_precision": float(average_precision_score(y_test, y_pred_proba)),
     }
     logger.info("Test evaluation", extra=metrics)
-    logger.info(
-        "Classification report:\n" + classification_report(y_test, y_pred, zero_division=0)
-    )
+    logger.info("Classification report:\n" + classification_report(y_test, y_pred, zero_division=0))
     return metrics
 
 

@@ -85,11 +85,7 @@ def drop_high_missing(
 ) -> pd.DataFrame:
     """Drop columns where missing fraction exceeds threshold. Protect target and ID."""
     missing_pct = df.isnull().mean()
-    to_drop = [
-        col
-        for col in missing_pct[missing_pct > threshold].index
-        if col not in protected
-    ]
+    to_drop = [col for col in missing_pct[missing_pct > threshold].index if col not in protected]
     logger.info(
         "Dropping high-missing columns",
         extra={"count": len(to_drop), "threshold": threshold},

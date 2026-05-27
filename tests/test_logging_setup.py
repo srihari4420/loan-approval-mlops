@@ -64,8 +64,13 @@ def test_json_formatter_includes_correlation_id() -> None:
     set_correlation_id("abc-123")
     formatter = JsonFormatter()
     record = logging.LogRecord(
-        name="test", level=logging.INFO, pathname="t.py",
-        lineno=1, msg="hello", args=(), exc_info=None,
+        name="test",
+        level=logging.INFO,
+        pathname="t.py",
+        lineno=1,
+        msg="hello",
+        args=(),
+        exc_info=None,
     )
     output = formatter.format(record)
     parsed = json.loads(output)
@@ -76,8 +81,13 @@ def test_json_formatter_includes_extra_fields() -> None:
     """Extra fields passed via logger.info(..., extra={...}) must be preserved."""
     formatter = JsonFormatter()
     record = logging.LogRecord(
-        name="test", level=logging.INFO, pathname="t.py",
-        lineno=1, msg="hello", args=(), exc_info=None,
+        name="test",
+        level=logging.INFO,
+        pathname="t.py",
+        lineno=1,
+        msg="hello",
+        args=(),
+        exc_info=None,
     )
     record.user_id = "user_42"
     record.duration_ms = 123
@@ -94,9 +104,14 @@ def test_json_formatter_handles_exceptions() -> None:
         raise ValueError("boom")
     except ValueError:
         import sys
+
         record = logging.LogRecord(
-            name="test", level=logging.ERROR, pathname="t.py",
-            lineno=1, msg="error happened", args=(),
+            name="test",
+            level=logging.ERROR,
+            pathname="t.py",
+            lineno=1,
+            msg="error happened",
+            args=(),
             exc_info=sys.exc_info(),
         )
     output = formatter.format(record)
