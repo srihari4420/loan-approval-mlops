@@ -92,8 +92,8 @@ def create_app() -> FastAPI:
             raise HTTPException(status_code=500, detail="scoring failed") from e
 
         decision: Literal["approve", "decline"] = (
-    "decline" if proba >= s.decision_threshold else "approve"
-)
+            "decline" if proba >= s.decision_threshold else "approve"
+        )
 
         risk_factors: list[Factor] = []
         protective_factors: list[Factor] = []

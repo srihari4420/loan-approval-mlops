@@ -95,9 +95,7 @@ def test_predict_rejects_invalid_enum(client: TestClient, valid_application: dic
     assert r.status_code == 422
 
 
-def test_predict_rejects_negative_income(
-    client: TestClient, valid_application: dict
-) -> None:
+def test_predict_rejects_negative_income(client: TestClient, valid_application: dict) -> None:
     valid_application["AMT_INCOME_TOTAL"] = -1000.0
     r = client.post("/predict", json=valid_application)
     assert r.status_code == 422
@@ -109,9 +107,7 @@ def test_predict_rejects_extra_fields(client: TestClient, valid_application: dic
     assert r.status_code == 422
 
 
-def test_correlation_id_returned_in_response(
-    client: TestClient, valid_application: dict
-) -> None:
+def test_correlation_id_returned_in_response(client: TestClient, valid_application: dict) -> None:
     r = client.post("/predict", json=valid_application)
     assert "x-correlation-id" in r.headers
 
