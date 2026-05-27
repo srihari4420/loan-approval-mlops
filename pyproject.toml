@@ -76,6 +76,7 @@ module = [
     "joblib.*",
     "category_encoders.*",
     "hydra.*",
+    "shap.*",
     "omegaconf.*",
 ]
 ignore_missing_imports = true

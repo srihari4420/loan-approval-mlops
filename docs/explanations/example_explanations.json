@@ -1,0 +1,149 @@
+{
+  "high_risk": {
+    "default_probability": 0.9639554023742676,
+    "base_rate": 0.05197085440158844,
+    "risk_factors": [
+      {
+        "feature": "EXT_SOURCE_2",
+        "shap": 1.166398525238037
+      },
+      {
+        "feature": "EXT_SOURCE_3",
+        "shap": 0.9189372658729553
+      },
+      {
+        "feature": "EXT_SOURCE_1",
+        "shap": 0.8993557095527649
+      },
+      {
+        "feature": "AMT_GOODS_PRICE",
+        "shap": 0.15355071425437927
+      },
+      {
+        "feature": "LANDAREA_MODE",
+        "shap": 0.15058954060077667
+      }
+    ],
+    "protective_factors": [
+      {
+        "feature": "BASEMENTAREA_AVG",
+        "shap": -0.03679840266704559
+      },
+      {
+        "feature": "REGION_POPULATION_RELATIVE",
+        "shap": -0.04217027127742767
+      },
+      {
+        "feature": "DAYS_REGISTRATION",
+        "shap": -0.051159534603357315
+      },
+      {
+        "feature": "CODE_GENDER_F",
+        "shap": -0.05977533385157585
+      },
+      {
+        "feature": "AMT_CREDIT",
+        "shap": -0.1390509307384491
+      }
+    ],
+    "actual_target": 1
+  },
+  "low_risk": {
+    "default_probability": 0.002504163421690464,
+    "base_rate": 0.05197085440158844,
+    "risk_factors": [
+      {
+        "feature": "NAME_FAMILY_STATUS_Married",
+        "shap": 0.11186602711677551
+      },
+      {
+        "feature": "APARTMENTS_AVG",
+        "shap": 0.09400644898414612
+      },
+      {
+        "feature": "AMT_GOODS_PRICE",
+        "shap": 0.07640516757965088
+      },
+      {
+        "feature": "FLOORSMAX_AVG",
+        "shap": 0.05362766608595848
+      },
+      {
+        "feature": "HOUR_APPR_PROCESS_START",
+        "shap": 0.02757730893790722
+      }
+    ],
+    "protective_factors": [
+      {
+        "feature": "DAYS_ID_PUBLISH",
+        "shap": -0.3939940333366394
+      },
+      {
+        "feature": "NAME_CONTRACT_TYPE_Cash loans",
+        "shap": -0.48266276717185974
+      },
+      {
+        "feature": "EXT_SOURCE_3",
+        "shap": -0.5025232434272766
+      },
+      {
+        "feature": "EXT_SOURCE_1",
+        "shap": -0.6286454200744629
+      },
+      {
+        "feature": "EXT_SOURCE_2",
+        "shap": -0.9476563930511475
+      }
+    ],
+    "actual_target": 0
+  },
+  "borderline": {
+    "default_probability": 0.5,
+    "base_rate": 0.05197085440158844,
+    "risk_factors": [
+      {
+        "feature": "AMT_GOODS_PRICE",
+        "shap": 0.25223052501678467
+      },
+      {
+        "feature": "AMT_CREDIT",
+        "shap": 0.20768769085407257
+      },
+      {
+        "feature": "DAYS_ID_PUBLISH",
+        "shap": 0.1667671948671341
+      },
+      {
+        "feature": "AMT_ANNUITY",
+        "shap": 0.15128418803215027
+      },
+      {
+        "feature": "AMT_INCOME_TOTAL",
+        "shap": 0.11813309043645859
+      }
+    ],
+    "protective_factors": [
+      {
+        "feature": "HOUR_APPR_PROCESS_START",
+        "shap": -0.08547893911600113
+      },
+      {
+        "feature": "REGION_RATING_CLIENT_W_CITY",
+        "shap": -0.11718534678220749
+      },
+      {
+        "feature": "EXT_SOURCE_3",
+        "shap": -0.15426896512508392
+      },
+      {
+        "feature": "DAYS_EMPLOYED",
+        "shap": -0.2303328663110733
+      },
+      {
+        "feature": "EXT_SOURCE_2",
+        "shap": -0.5665159225463867
+      }
+    ],
+    "actual_target": 0
+  }
+}
