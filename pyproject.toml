@@ -35,7 +35,7 @@ dev = [
     "pandas-stubs",
     "types-PyYAML",
     "pre-commit>=3.8",
-    "kaggle>=1.6",
+    "kaggle>=2.2.0",
     "dvc>=3.50",
     "httpx>=0.28.1",
     "aiosqlite>=0.22.1",
