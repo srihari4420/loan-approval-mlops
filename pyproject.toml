@@ -73,11 +73,8 @@ warn_unused_ignores = true
 [[tool.mypy.overrides]]
 module = [
     "sklearn.*",
-    "xgboost.*",
-    "shap.*",
+    "joblib.*",
     "category_encoders.*",
-    "mlflow.*",
-    "evidently.*",
     "hydra.*",
     "omegaconf.*",
 ]

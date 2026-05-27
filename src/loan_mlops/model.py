@@ -88,4 +88,4 @@ def load_model(model_dir: Path, name: str) -> Pipeline:
     path = model_dir / f"{name}.joblib"
     logger.info("Loading model", extra={"path": str(path)})
     pipeline = joblib.load(path)
-    return pipeline  # type: ignore[no-any-return]
+    return pipeline
